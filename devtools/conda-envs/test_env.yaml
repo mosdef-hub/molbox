@@ -1,0 +1,17 @@
+name: test
+channels:
+
+  - conda-forge
+
+  - defaults
+dependencies:
+    # Base depends
+  - python
+  - pip
+  - numpy
+
+    # Testing
+  - pytest
+  - pytest-cov
+  - codecov
+
