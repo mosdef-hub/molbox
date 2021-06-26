@@ -1,1 +1,0 @@
-"""Format library for mBuild."""

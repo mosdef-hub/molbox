@@ -1,2 +1,0 @@
-include LICENSE.rst
-global-include *.pdb *.mol2 *.smi *.xml *.xyz
