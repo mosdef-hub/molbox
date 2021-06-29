@@ -1,12 +1,15 @@
 import numpy as np
 import pytest
 
-import mbuild as mb
-from mbuild.exceptions import MBuildError
-from mbuild.tests.base_test import BaseTest
+import molbox
+from molbox.box import BoxError
 
 
-class TestBox(BaseTest):
+class TestBox:
+    @pytest.fixture(autouse=True)
+    def initdir(self, tmpdir):
+        tmpdir.chdir()
+
     @pytest.mark.parametrize(
         "vectors",
         [
@@ -15,7 +18,7 @@ class TestBox(BaseTest):
         ],
     )
     def test_from_vectors(self, vectors):
-        mb.Box.from_vectors(vectors)
+        molbox.Box.from_vectors(vectors)
 
     @pytest.mark.parametrize(
         "lengths, angles",
@@ -26,8 +29,8 @@ class TestBox(BaseTest):
         ],
     )
     def test_from_lengths_angles(self, lengths, angles):
-        mb.Box(lengths=lengths, angles=angles)
-        mb.Box.from_lengths_angles(lengths=lengths, angles=angles)
+        molbox.Box(lengths=lengths, angles=angles)
+        molbox.Box.from_lengths_angles(lengths=lengths, angles=angles)
 
     @pytest.mark.parametrize(
         "lh_matrix",
@@ -49,7 +52,7 @@ class TestBox(BaseTest):
         with pytest.warns(
             UserWarning, match=r"provided for a left\-handed basis"
         ):
-            mb.Box.from_vectors(vectors=lh_matrix)
+            molbox.Box.from_vectors(vectors=lh_matrix)
 
     @pytest.mark.parametrize(
         "vecs",
@@ -60,8 +63,8 @@ class TestBox(BaseTest):
         ],
     )
     def test_colinear_vectors(self, vecs):
-        with pytest.raises(mb.exceptions.MBuildError, match=r"co\-linear"):
-            mb.Box.from_vectors(vectors=vecs)
+        with pytest.raises(BoxError, match=r"co\-linear"):
+            molbox.Box.from_vectors(vectors=vecs)
 
     @pytest.mark.parametrize(
         "vecs",
@@ -72,8 +75,8 @@ class TestBox(BaseTest):
     )
     def test_non_unit_vectors(self, vecs):
         lengths = [2, 2, 2]
-        with pytest.raises(MBuildError, match=r"are not close to 1\.0"):
-            mb.Box.from_uvec_lengths(uvec=vecs, lengths=lengths)
+        with pytest.raises(BoxError, match=r"are not close to 1\.0"):
+            molbox.Box.from_uvec_lengths(uvec=vecs, lengths=lengths)
 
     @pytest.mark.parametrize(
         "uvec, lengths, expected_angles",
@@ -91,7 +94,7 @@ class TestBox(BaseTest):
         ],
     )
     def test_uvec_lengths(self, uvec, lengths, expected_angles):
-        box = mb.Box.from_uvec_lengths(uvec, lengths)
+        box = molbox.Box.from_uvec_lengths(uvec, lengths)
         assert np.all(np.isclose(box.lengths, lengths))
         assert np.all(np.isclose(box.angles, expected_angles))
 
@@ -104,7 +107,7 @@ class TestBox(BaseTest):
         ],
     )
     def test_lengths_tilt_factors(self, lengths, tilt_factors, angles):
-        box = mb.Box.from_lengths_tilt_factors(
+        box = molbox.Box.from_lengths_tilt_factors(
             lengths,
             tilt_factors,
         )
@@ -136,7 +139,7 @@ class TestBox(BaseTest):
         (xy, xz, yz) = tilt_factors
 
         lengths = [xhi - (xlo + xy), yhi - ylo, zhi - zlo]
-        box = mb.Box.from_lo_hi_tilt_factors(
+        box = molbox.Box.from_lo_hi_tilt_factors(
             lo=lo, hi=hi, tilt_factors=tilt_factors
         )
         assert np.all(np.isclose(box.lengths, lengths))
@@ -148,7 +151,7 @@ class TestBox(BaseTest):
         [(1, 1, 1, 90, 90, 90), (1, 1, 1, 90, 90, 120), (3, 6, 7, 97, 99, 120)],
     )
     def test_bravais_parameters(self, a, b, c, alpha, beta, gamma):
-        box = mb.Box(lengths=[a, b, c], angles=[alpha, beta, gamma])
+        box = molbox.Box(lengths=[a, b, c], angles=[alpha, beta, gamma])
         assert np.all(
             np.isclose(
                 list(box.bravais_parameters), [a, b, c, alpha, beta, gamma]

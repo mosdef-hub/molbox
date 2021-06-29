@@ -1,11 +1,13 @@
-"""mBuild box module."""
+"""generic box module."""
 from warnings import warn
 
 import numpy as np
 
-from mbuild.exceptions import MBuildError
+__all__ = ["Box", "BoxError"]
 
-__all__ = ["Box"]
+
+class BoxError(Exception):
+    """Exception to be raised when there's an error in Box methods"""
 
 
 class Box(object):
@@ -86,7 +88,7 @@ class Box(object):
         uvec.reshape(3, 3)
 
         if not np.allclose(np.linalg.norm(uvec, axis=1), 1.0):
-            raise MBuildError(
+            raise BoxError(
                 "Unit vector magnitudes provided are not close to 1.0, "
                 f"magnitudes: {np.linalg.norm(uvec, axis=1)}"
             )
@@ -358,7 +360,7 @@ def _normalize_box(vectors):
     """
     det = np.linalg.det(vectors)
     if np.isclose(det, 0.0, atol=1e-5):
-        raise MBuildError(
+        raise BoxError(
             "The vectors to define the box are co-linear, this does not form a "
             f"3D region in space.\n Box vectors evaluated: {vectors}"
         )
