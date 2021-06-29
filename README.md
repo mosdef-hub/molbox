@@ -19,17 +19,19 @@ print("Box Attributes:")
 print(f"Lengths(x, y, z): ({box.Lx}, {box.Ly}, {box.Lz})")
 print(f"Tilt Factors(xy, yz, xz): ({box.xy}, {box.yz}, {box.xz}")
 print(f"Vectors: {box.vectors}")
+# Create a box from box vectors
+from_vec_box = Box.from_vectors([[2, 0, 0], [-1.5, 2.59808, 0], [0, 0, 4]])
 ```
 
 ### API
 Full documentation can be accessed [here](API.md).
 
-### Copyright
+## Copyright
 
 Copyright (c) 2021, Vanderbilt University
 
 
-#### Acknowledgements
+## Acknowledgements
  
 Project based on the 
 [Computational Molecular Science Python Cookiecutter](https://github.com/molssi/cookiecutter-cms) version 1.5.
