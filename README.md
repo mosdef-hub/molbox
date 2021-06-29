@@ -1,7 +1,7 @@
 molbox
 ==============================
 [//]: # (Badges)
-[![GitHub Actions Build Status](https://github.com/REPLACE_WITH_OWNER_ACCOUNT/molbox/workflows/CI/badge.svg)](https://github.com/mosdef-hub/molbox/actions?query=workflow%3ACI)
+[![CI](https://github.com/mosdef-hub/molbox/actions/workflows/CI.yaml/badge.svg)](https://github.com/mosdef-hub/molbox/actions/workflows/CI.yaml)
 [![codecov](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/molbox/branch/master/graph/badge.svg)](https://codecov.io/gh/mosdef-hub/molbox/branch/master)
 
 
